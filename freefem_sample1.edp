@@ -1,0 +1,13 @@
+// freefem_sample1.edp
+//
+border L(t=-1,1){x=0.0;y=t;}
+border C(t=-0.5*pi,0.5*pi){x=cos(t);y=sin(t);}
+mesh Omega=buildmesh(L(-10)+C(20));
+
+fespace Vh(Omega,P1);
+Vh u,v;
+func f=x+y;
+solve Problem(u,v,solver=LU)=
+  int1d(Omega,L,C)((N.x*dx(u)+N.y*dy(u))*v)
+    -int2d(Omega)(dx(u)*dx(v)+dy(u)*dy(v))-int2d(Omega)(f*v)+on(L,u=1)+on(C,u=0);
+plot(u);
