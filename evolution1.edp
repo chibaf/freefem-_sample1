@@ -1,0 +1,30 @@
+// parameters
+real tau=0.1;
+real mu=0.001;
+
+//mesh
+border L(t=-1,1){x=0.0;y=t;}
+border C(t=-0.5*pi,0.5*pi){x=cos(t);y=sin(t);}
+mesh Omega=buildmesh(L(-10)+C(20));
+
+plot(Omega);
+
+//FEspace
+fespace Vh(Omega,P1);
+Vh u,v,uu;
+//problem
+problem dEvol(u,v)
+     =int2d(Omega)(u*v+tau*mu*(dx(u)*dx(v)+dy(u)*dy(v)))
+         -int1d(Omega,L,C)((dx(u)*N.x+dy(u)*N.y)*v*tau)
+         -int2d(Omega)(uu*v+tau*(x+y)*v)
+         +on(L,u=1)
+         +on(C,u=1);
+//time loop
+real t=0;
+uu=1;
+for(int m=0;m<=500;m++){
+	t=t+tau;
+	uu=u;
+	dEvol;
+	plot(u);
+}
