@@ -22,9 +22,9 @@ problem dEvol(u,v)
 //time loop
 real t=0;
 uu=1;
-for(int m=0;m<=500;m++){
+for(int m=0;m<=200;m++){
   t=t+tau;
-  uu=u;
   dEvol;
+  uu=u;
   plot(u);
 }
