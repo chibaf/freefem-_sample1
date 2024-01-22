@@ -1,6 +1,6 @@
 // parameters
 real tau=0.1;
-real mu=0.001;
+real mu=0.01;
 
 //mesh
 border L(t=-1,1){x=0.0;y=t;}
