@@ -10,19 +10,21 @@ mesh Omega=buildmesh(L(-10)+C(20));
 //FEspace
 fespace Vh(Omega,P1);
 Vh u,v,uu;
+
 //problem
 problem dEvol(u,v)
-     =int2d(Omega)(u*v+tau*mu*(dx(u)*dx(v)+dy(u)*dy(v)))
-         -int1d(Omega,L,C)((dx(u)*N.x+dy(u)*N.y)*v*tau)
-         -int2d(Omega)(uu*v+tau*(x+y)*v)
-         +on(L,u=1)
-         +on(C,u=1);
+  =int2d(Omega)(u*v+tau*mu*(dx(u)*dx(v)+dy(u)*dy(v)))
+     -int1d(Omega,L,C)((dx(u)*N.x+dy(u)*N.y)*v*tau)
+     -int2d(Omega)(uu*v+tau*(x+y)*v)
+     +on(L,u=1)
+     +on(C,u=1);
+     
 //time loop
 real t=0;
 uu=1;
 for(int m=0;m<=500;m++){
-	t=t+tau;
-	uu=u;
-	dEvol;
-	plot(u);
+  t=t+tau;
+  uu=u;
+  dEvol;
+  plot(u);
 }
