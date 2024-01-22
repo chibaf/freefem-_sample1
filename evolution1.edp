@@ -7,8 +7,6 @@ border L(t=-1,1){x=0.0;y=t;}
 border C(t=-0.5*pi,0.5*pi){x=cos(t);y=sin(t);}
 mesh Omega=buildmesh(L(-10)+C(20));
 
-plot(Omega);
-
 //FEspace
 fespace Vh(Omega,P1);
 Vh u,v,uu;
