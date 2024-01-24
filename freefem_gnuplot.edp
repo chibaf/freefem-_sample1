@@ -1,0 +1,32 @@
+real rad=1.0;
+int n1;
+func f=-10*sin(x*y);
+func g=0;
+n1=64;
+
+//   define borders
+border a(t=0,2*pi){x=rad*(1-0.5*sin(2*t))*cos(t);y=rad*(1-0.25*cos(3*t))*sin(t);label=1;};
+
+//   define domain and mesh
+mesh Omega=buildmesh(a(n1));
+savemesh(Omega,"./wwg.msh");
+//plot(Omega,ps="./Omega.eps");
+
+//generate fem space
+fespace Vh(Omega,P1);
+Vh u,v;
+
+//define and solve problem
+solve pde(u,v)=
+  int2d(Omega)(dx(u)*dx(v)+dy(u)*dy(v)+u*v)+on(a,u=g)-int2d(Omega)(f*v);
+
+plot(Omega,u,fill=1,wait=true,ps="u.eps");
+
+//generate gnuplot data
+{ofstream ff("u.txt"); 
+for(int i=0;i<Omega.nt;i++)
+ {for (int j=0; j<3; j++)
+    ff<<Omega[i][j].x << " " << Omega[i][j].y << " " << u[][Vh(i,j)] << endl; 
+    ff<<Omega[i][0].x << " " << Omega[i][0].y << " " << u[][Vh(i,0)] << " \n\n\n";
+  } 
+} 
